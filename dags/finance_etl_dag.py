@@ -19,7 +19,7 @@ default_args = {
 dag = DAG(
     'finance_etl_hub_pipeline',
     default_args=default_args,
-    description='End-to-end Finance ETL Pipeline from UCI to PostgreSQL & BigQuery',
+    description='End-to-end Finance ETL Pipeline from UCI to PostgreSQL & Azure SQL',
     schedule_interval=timedelta(days=1),
     catchup=False
 )

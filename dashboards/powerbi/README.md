@@ -1,27 +1,39 @@
 
-# Online Retail Data Analysis - Dashboard Guide
+# FinanceETLHub — Power BI (Microsoft)
 
-## 1. Power BI Setup
+## Retail star schema (Online Retail ETL)
 
-### Data Source
-- Select **Get Data** -> **PostgreSQL Database**
-- Server: `localhost` (or Docker IP)
-- Database: `finance_db`
-- User/Pass: `postgres`/`postgres`
+### Data sources (pick one)
 
-### Data Modeling
-- **Fact Table**: `fact_sales`
-- **Dimension Tables**: `dim_customer`, `dim_product`, `dim_date`, `dim_country`
-- **Relationships**: Create One-to-Many relationships from Dims to Fact on keys (e.g. `customer_key` -> `customer_key`)
+| Source | When to use |
+|--------|-------------|
+| **PostgreSQL** (Docker local) | Dev / demo |
+| **Azure SQL** | Cloud-aligned production mirror (`USE_AZURE=true`) |
+| **Microsoft Fabric** | Use the `macro-market-engine` semantic model for macro/markets (not retail facts) |
 
-### Proposed KPIs (Measures)
+### PostgreSQL
+
+- **Get Data** → PostgreSQL
+- Server: `localhost`, Database: `finance_db`, User/Pass: `postgres` / `postgres`
+
+### Azure SQL
+
+- **Get Data** → Azure SQL database
+- Server: `your-server.database.windows.net`, Database: `finance_dw`
+- Import or DirectQuery (DirectQuery for large fact tables)
+
+### Modeling
+
+- **Fact:** `fact_sales`
+- **Dims:** `dim_customer`, `dim_product`, `dim_date`
+- Relationships: many-to-one from fact keys to dimensions
+
+### Sample measures
+
 1. **Total Revenue (GBP)** = `SUM(fact_sales[total_gbp])`
-2. **Total Revenue (USD)** = `SUM(fact_sales[total_usd])`
-3. **Average Order Value** = `[Total Revenue] / DISTINCTCOUNT(fact_sales[invoice_no])`
-4. **Active Customers** = `DISTINCTCOUNT(fact_sales[customer_key])`
+2. **AOV** = `[Total Revenue GBP] / DISTINCTCOUNT(fact_sales[invoice_no])`
+3. **Active Customers** = `DISTINCTCOUNT(fact_sales[customer_key])`
 
-### Visualizations
-1. **Global Sales Map**: Map visual using `dim_country[Country]` and `[Total Revenue]`
-2. **Monthly Revenue Trend**: Line chart with `dim_date[Year-Month]` on X-axis
-3. **Top 10 Products**: Bar chart of `dim_product[Description]` by Revenue
-4. **RFM Segmentation**: Pie chart using `dim_customer[rfm_segment_name]` counts
+### Macro / markets (Fabric)
+
+Build the executive report from [`macro-market-engine/powerbi/BUILD_REPORT.md`](../../macro-market-engine/powerbi/BUILD_REPORT.md) on the **MacroMarket** Direct Lake model.

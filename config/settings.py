@@ -22,10 +22,20 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str = Field(default="localhost")
     POSTGRES_PORT: int = Field(default=5432)
     
-    # GCP
-    GCP_PROJECT_ID: str = Field(default="")
-    GCP_DATASET_ID: str = Field(default="finance_dw")
-    GCP_BUCKET_NAME: str = Field(default="")
+    # Microsoft Azure (Blob + Azure SQL)
+    USE_AZURE: bool = Field(default=False)
+    AZURE_STORAGE_CONNECTION_STRING: str = Field(default="")
+    AZURE_STORAGE_CONTAINER: str = Field(default="finance-data")
+    AZURE_SQL_CONNECTION_STRING: str = Field(default="")
+
+    # Snowflake
+    SNOWFLAKE_USER: str = Field(default="")
+    SNOWFLAKE_PASSWORD: str = Field(default="")
+    SNOWFLAKE_ACCOUNT: str = Field(default="")
+    SNOWFLAKE_WAREHOUSE: str = Field(default="COMPUTE_WH")
+    SNOWFLAKE_DATABASE: str = Field(default="FINANCE_DW")
+    SNOWFLAKE_SCHEMA: str = Field(default="PUBLIC")
+    USE_SNOWFLAKE: bool = Field(default=False)
     
     # App Settings
     LOG_LEVEL: str = Field(default="INFO")

@@ -1,7 +1,7 @@
 # 📊 Finance Data Platform - Project Abstract & Presentation Plan
 
 ## 🏆 Executive Summary
-The **Finance ETL Hub** is an end-to-end, industrial-grade data engineering platform designed to transform raw commercial transactions into actionable financial intelligence. The system implements a modern **Medallion Architecture**, progressing from raw data storage (GCS/Local) to a high-performance **Star Schema** data warehouse (PostgreSQL/BigQuery). 
+The **Finance ETL Hub** is an end-to-end, industrial-grade data engineering platform designed to transform raw commercial transactions into actionable financial intelligence. The system implements a modern **Medallion Architecture**, progressing from raw data storage (**Azure Blob** / local) to a **Star Schema** warehouse (PostgreSQL / **Azure SQL**). Institutional macro analytics live in **Microsoft Fabric** (`macro-market-engine/`). 
 
 Key innovations include an **AI-driven revenue forecaster**, an **automated fraud detection engine**, and **RFM customer segmentation**, all orchestrated through a production-ready CI/CD and automation framework.
 
@@ -32,7 +32,7 @@ Key innovations include an **AI-driven revenue forecaster**, an **automated frau
 
 ### Slide 3: Data Engineering Pipeline (Architecture)
 *   **Visual**: Diagram showing Raw Data ➡️ ETL Engine ➡️ Data Warehouse ➡️ Dashboard.
-*   **Keywords**: Python, SQL, Docker, GCP (BigQuery/GCS), Airflow.
+*   **Keywords**: Python, SQL, Docker, Microsoft Azure, Fabric, Power BI, Airflow.
 
 ### Slide 4: Real-time Business Logic
 *   **Currency**: Automatic conversion to 4 major markets.
@@ -44,7 +44,7 @@ Key innovations include an **AI-driven revenue forecaster**, an **automated frau
 *   **Churn**: Proactively identifying customers likely to leave the platform.
 
 ### Slide 6: Cloud & DevOps Maturity
-*   **Cloud Ready**: One-click migration to Google Cloud Platform.
+*   **Cloud Ready**: Azure Blob + Azure SQL; Fabric Lakehouse for macro markets.
 *   **DevOps**: Makefile orchestration and automated Unit Testing.
 
 ### Slide 7: Conclusion & Outlook

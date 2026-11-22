@@ -9,14 +9,17 @@ from src.transformation.currency import CurrencyTransformer
 from src.transformation.rfm import RFMSegmenter
 from src.transformation.fraud import FraudDetector
 from src.warehouse.loader import WarehouseLoader
-from src.warehouse.gcp_loader import GCPLoader
+from src.warehouse.azure_loader import AzureLoader
 from src.analytics.predictive import SalesForecaster, ChurnPredictor
 from src.quality.checks import QualityChecks
 from config.logging_config import setup_logging
+from config.settings import settings
 
 def main():
+    import sys
+    logger.info(f"PythonPath: {sys.path}")
     parser = argparse.ArgumentParser(description="FinanceETLHub - End-to-End ETL Pipeline")
-    parser.add_argument('--step', type=str, choices=['ingest', 'transform', 'load', 'full', 'cdc', 'dashboard', 'predict'], default='full', help='ETL Step to run')
+    parser.add_argument('--step', type=str, choices=['ingest', 'transform', 'load', 'full', 'cdc', 'dashboard', 'predict', 'test'], default='full', help='ETL Step to run')
     args = parser.parse_args()
 
     if args.step == 'dashboard':
@@ -24,6 +27,11 @@ def main():
         logger.info("Launching Dashboard...")
         subprocess.run(["streamlit", "run", "dashboards/app.py"])
         return
+
+    if args.step == 'test':
+        import pytest
+        logger.info("Running Unit Tests...")
+        sys.exit(pytest.main(["tests/"]))
 
     logger.info(f"Starting ETL Pipeline in '{args.step}' mode...")
 
@@ -44,10 +52,10 @@ def main():
             sys.exit(1)
 
         # Mirror Raw Data to Cloud (Data Lake)
-        gcp_loader = GCPLoader()
-        if gcp_loader.storage_client:
-            logger.info(">>> Archiving raw data to Cloud Storage (Data Lake)")
-            gcp_loader.upload_to_gcs("data/raw/online_retail.csv", "raw/online_retail.csv")
+        azure = AzureLoader()
+        if azure.blob_client:
+            logger.info(">>> Archiving raw data to Azure Blob (data lake)")
+            azure.upload_to_blob("data/raw/online_retail.csv", "raw/online_retail.csv")
 
         # Handle CDC Simulation
         if args.step == 'cdc':
@@ -74,12 +82,11 @@ def main():
             fx_fetcher = FXFetcher()
             rates = fx_fetcher.get_rates()
         
-        # In predict mode, we just need to run transformation to get clean data
-        # but we don't necessarily need to load to DB unless specified.
-        # Let's run it and then trigger AI logic.
+        # Run transformation and loading
         processed_df, rfm_df = process_data(raw_df, rates, run_load=(args.step != 'predict'))
-
-        if args.step == 'predict':
+        
+        # Run AI logic if in 'predict' or 'full' mode
+        if args.step in ['predict', 'full']:
             logger.info(">>> Step 4: AI Predictive Analytics")
             forecaster = SalesForecaster(processed_df)
             forecast = forecaster.forecast_revenue(days=30)
@@ -114,6 +121,13 @@ def process_data(df, rates, is_initial=True, run_load=True):
     # 4. Fraud Detection
     fraud = FraudDetector(processed_df)
     processed_df = fraud.detect()
+
+    # 4.1 Deep Learning Fraud Detection (MLP)
+    from src.analytics.fraud_deep import DeepFraudDetector
+    deep_fraud = DeepFraudDetector()
+    # Use rule-based flags as training labels (Weak Supervision)
+    deep_fraud.train(processed_df, processed_df['Is_Fraud_Suspect'])
+    processed_df = deep_fraud.detect(processed_df)
     
     # 5. Data Quality
     dq = QualityChecks(processed_df)
@@ -125,18 +139,37 @@ def process_data(df, rates, is_initial=True, run_load=True):
     if run_load:
         logger.info(">>> Loading to Data Warehouse")
         dw_loader = WarehouseLoader()
-        gcp_loader = GCPLoader()
+        azure = AzureLoader()
+        
+        if settings.USE_SNOWFLAKE:
+            from src.warehouse.snowflake_loader import SnowflakeLoader
+            start_snowflake = True
+        else:
+            start_snowflake = False
         
         try:
+            # 1. Local / Postgres Load
+            logger.info(f"Using Warehouse Engine: {dw_loader.engine}")
             if is_initial:
                 dw_loader.init_db()
             dw_loader.load_dimensions(processed_df, rfm_df)
             dw_loader.load_facts(processed_df)
+
+            # 2. Snowflake Load
+            if start_snowflake:
+                logger.info(">>> Loading to Snowflake Data Warehouse")
+                sf_loader = SnowflakeLoader()
+                if sf_loader.engine:
+                    if is_initial:
+                        sf_loader.init_db()
+                    sf_loader.load_dimensions(processed_df, rfm_df)
+                    sf_loader.load_facts(processed_df)
+                    logger.success("Snowflake Load Successful!")
             
-            # Cloud Upload (GCP)
-            if gcp_loader.bq_client:
-                logger.info(">>> Uploading to Google Cloud BigQuery")
-                gcp_loader.load_star_schema(processed_df, rfm_df)
+            # Cloud upload (Microsoft Azure SQL)
+            if azure.sql_engine:
+                logger.info(">>> Loading star schema to Azure SQL")
+                azure.load_star_schema(processed_df, rfm_df)
                 
             logger.success("Batch Processing Successful!")
         except Exception as e:
