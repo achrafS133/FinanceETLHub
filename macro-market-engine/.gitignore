@@ -1,0 +1,27 @@
+# Secrets
+.env
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Local data / Delta scratch (never commit data)
+data/
+spark-warehouse/
+*.delta/
+*.parquet
+*.db
+
+# MLflow local runs
+mlruns/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "10_Bronze_Ingest",
+    "description": "Idempotent raw ingestion from FRED / World Bank / IMF / Yahoo / SEC EDGAR into OneLake Bronze."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "00000000-0000-0000-0000-0000000000b1"
+  }
+}

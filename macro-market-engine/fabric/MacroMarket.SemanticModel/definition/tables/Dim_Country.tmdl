@@ -1,0 +1,24 @@
+table Dim_Country
+
+	column CountryISO3
+		dataType: string
+		isKey
+		summarizeBy: none
+		sourceColumn: CountryISO3
+
+	column Region
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Region
+
+	column MarketClass
+		dataType: string
+		summarizeBy: none
+		sourceColumn: MarketClass
+
+	partition Dim_Country = entity
+		mode: directLake
+		source
+			entityName: Dim_Country
+			schemaName: dbo
+			expressionSource: DatabaseQuery

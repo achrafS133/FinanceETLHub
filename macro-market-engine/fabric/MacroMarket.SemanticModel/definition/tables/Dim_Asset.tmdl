@@ -1,0 +1,34 @@
+table Dim_Asset
+
+	column Ticker
+		dataType: string
+		isKey
+		summarizeBy: none
+		sourceColumn: Ticker
+
+	column AssetName
+		dataType: string
+		summarizeBy: none
+		sourceColumn: AssetName
+
+	column AssetClass
+		dataType: string
+		summarizeBy: none
+		sourceColumn: AssetClass
+
+	column GICSSector
+		dataType: string
+		summarizeBy: none
+		sourceColumn: GICSSector
+
+	column Region
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Region
+
+	partition Dim_Asset = entity
+		mode: directLake
+		source
+			entityName: Dim_Asset
+			schemaName: dbo
+			expressionSource: DatabaseQuery

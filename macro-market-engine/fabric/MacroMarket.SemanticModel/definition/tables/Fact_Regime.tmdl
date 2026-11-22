@@ -1,0 +1,43 @@
+table Fact_Regime
+
+	column DateKey
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column RegimeId
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: RegimeId
+
+	column RegimeName
+		dataType: string
+		summarizeBy: none
+		sourceColumn: RegimeName
+
+	column growth
+		dataType: double
+		summarizeBy: none
+		sourceColumn: growth
+
+	column inflation
+		dataType: double
+		summarizeBy: none
+		sourceColumn: inflation
+
+	column curve
+		dataType: double
+		summarizeBy: none
+		sourceColumn: curve
+
+	column credit
+		dataType: double
+		summarizeBy: none
+		sourceColumn: credit
+
+	partition Fact_Regime = entity
+		mode: directLake
+		source
+			entityName: Fact_Regime
+			schemaName: dbo
+			expressionSource: DatabaseQuery

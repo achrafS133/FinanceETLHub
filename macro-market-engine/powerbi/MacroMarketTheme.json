@@ -1,0 +1,57 @@
+{
+  "name": "MacroMarket Institutional",
+  "dataColors": [
+    "#2C5F6F",
+    "#8B9E8B",
+    "#C4A35A",
+    "#A44A4A",
+    "#5C6B7A",
+    "#6E8B74",
+    "#9A7B4F",
+    "#7A8FA6"
+  ],
+  "foreground": "#1E2A32",
+  "foregroundNeutralSecondary": "#5C6B7A",
+  "foregroundNeutralTertiary": "#8A96A0",
+  "background": "#F7F8F9",
+  "backgroundLight": "#FFFFFF",
+  "backgroundNeutral": "#E8EBED",
+  "tableAccent": "#2C5F6F",
+  "good": "#3D7A5C",
+  "bad": "#A44A4A",
+  "neutral": "#8A96A0",
+  "maximum": "#A44A4A",
+  "minimum": "#3D7A5C",
+  "center": "#C4A35A",
+  "textClasses": {
+    "title": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": "14pt",
+      "color": "#1E2A32"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "fontSize": "9pt",
+      "color": "#5C6B7A"
+    },
+    "callout": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": "28pt",
+      "color": "#1E2A32"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "color": { "solid": { "color": "#FFFFFF" } }, "transparency": 0 }],
+        "border": [{ "color": { "solid": { "color": "#E8EBED" } }, "show": true, "radius": 4 }]
+      }
+    },
+    "card": {
+      "*": {
+        "categoryLabels": [{ "color": { "solid": { "color": "#5C6B7A" } } }],
+        "labels": [{ "color": { "solid": { "color": "#1E2A32" } } }]
+      }
+    }
+  }
+}

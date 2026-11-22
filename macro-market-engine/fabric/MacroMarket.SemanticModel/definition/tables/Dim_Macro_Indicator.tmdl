@@ -1,0 +1,24 @@
+table Dim_Macro_Indicator
+
+	column SeriesId
+		dataType: string
+		isKey
+		summarizeBy: none
+		sourceColumn: SeriesId
+
+	column IndicatorName
+		dataType: string
+		summarizeBy: none
+		sourceColumn: IndicatorName
+
+	column Category
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Category
+
+	partition Dim_Macro_Indicator = entity
+		mode: directLake
+		source
+			entityName: Dim_Macro_Indicator
+			schemaName: dbo
+			expressionSource: DatabaseQuery

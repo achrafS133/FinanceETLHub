@@ -1,0 +1,100 @@
+/// Disconnected measure-host table. The single-row calculated partition keeps all
+/// measures in one place; it imports a constant row (supported alongside Direct Lake).
+table _Measures
+
+	measure 'Avg Daily Return' = AVERAGE ( Fact_Market_Daily[log_ret_w] )
+		formatString: 0.000%
+
+	measure 'Annualized Return' = AVERAGE ( Fact_Market_Daily[log_ret_w] ) * 252
+		formatString: 0.0%
+
+	measure 'Annualized Volatility' = STDEVX.P ( Fact_Market_Daily, Fact_Market_Daily[log_ret_w] ) * SQRT ( 252 )
+		formatString: 0.0%
+
+	/// Sharpe = annualized mean excess return / annualized volatility.
+	/// Risk-free is pulled from the Fed Funds daily proxy already baked into excess returns upstream;
+	/// here we approximate with the raw return series (extend with a RF measure if needed).
+	measure 'Sharpe Ratio' =
+			VAR mu = AVERAGE ( Fact_Market_Daily[log_ret_w] ) * 252
+			VAR sigma = STDEVX.P ( Fact_Market_Daily, Fact_Market_Daily[log_ret_w] ) * SQRT ( 252 )
+			RETURN DIVIDE ( mu, sigma )
+		formatString: 0.00
+
+	/// Growth of $1 over the current filter context (same as Cumulative Equity - 1).
+	measure 'Cumulative Return' =
+			PRODUCTX ( Fact_Market_Daily, 1 + Fact_Market_Daily[simple_ret] ) - 1
+		formatString: 0.0%
+
+	/// End-of-window equity curve level (product of 1 + simple returns).
+	measure 'Cumulative Equity' =
+			PRODUCTX ( Fact_Market_Daily, 1 + Fact_Market_Daily[simple_ret] )
+		formatString: 0.0000
+
+	/// Max Drawdown via virtual date table (no EARLIER): min of Equity / RunningPeak - 1.
+	measure 'Max Drawdown' =
+			VAR ByDate =
+				ADDCOLUMNS (
+					SUMMARIZE ( Fact_Market_Daily, Dim_Date[DateKey] ),
+					"@Eq",
+						VAR dk = Dim_Date[DateKey]
+						RETURN
+							CALCULATE (
+								PRODUCTX ( Fact_Market_Daily, 1 + Fact_Market_Daily[simple_ret] ),
+								FILTER ( ALLSELECTED ( Dim_Date ), Dim_Date[DateKey] <= dk )
+							)
+				)
+			VAR WithPeak =
+				ADDCOLUMNS (
+					ByDate,
+					"@Peak",
+						VAR dk = Dim_Date[DateKey]
+						VAR UpToDate = FILTER ( ByDate, Dim_Date[DateKey] <= dk )
+						RETURN MAXX ( UpToDate, [@Eq] )
+				)
+			RETURN
+				MINX ( WithPeak, DIVIDE ( [@Eq], [@Peak] ) - 1 )
+		formatString: 0.0%
+
+	/// Historical 1-day VaR (95%) from the empirical return distribution.
+	measure 'VaR 95% (1d)' = -PERCENTILEX.INC ( Fact_Market_Daily, Fact_Market_Daily[simple_ret], 0.05 )
+		formatString: 0.0%
+
+	measure 'VaR 99% (1d)' = -PERCENTILEX.INC ( Fact_Market_Daily, Fact_Market_Daily[simple_ret], 0.01 )
+		formatString: 0.0%
+
+	/// Latest detected macro regime (for the executive KPI banner).
+	measure 'Current Regime' =
+			VAR LastKey = CALCULATE ( MAX ( Fact_Regime[DateKey] ), ALLSELECTED ( Fact_Regime ) )
+			RETURN CALCULATE ( SELECTEDVALUE ( Fact_Regime[RegimeName] ), Fact_Regime[DateKey] = LastKey )
+
+	/// Macro YoY for a selected indicator (use with Dim_Macro_Indicator slicer).
+	measure 'Macro YoY %' = AVERAGE ( Fact_Macro_Monthly[yoy_pct] )
+		formatString: 0.0
+
+	measure 'Macro Latest Value' =
+			VAR LastKey = CALCULATE ( MAX ( Fact_Macro_Monthly[DateKey] ) )
+			RETURN CALCULATE ( AVERAGE ( Fact_Macro_Monthly[value] ), Fact_Macro_Monthly[DateKey] = LastKey )
+		formatString: 0.00
+
+	/// Average macro beta (for the sensitivity matrix); pair with Ticker/Factor on the axes.
+	measure 'Avg Macro Beta' = AVERAGE ( Fact_Macro_Beta[Beta] )
+		formatString: 0.0000
+
+	measure 'Scenario Expected Drawdown' = AVERAGE ( Fact_Stress_Scenario[ExpectedDrawdown] )
+		formatString: 0.0%
+
+	measure 'Scenario VaR 95% (10d)' = AVERAGE ( Fact_Stress_Scenario[VaR95_10d] )
+		formatString: 0.0%
+
+	measure 'Scenario Recovery (days)' = AVERAGE ( Fact_Stress_Scenario[RecoveryDays] )
+		formatString: 0
+
+	column Value
+		isHidden
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: [Value]
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW ( "Value", 1 )

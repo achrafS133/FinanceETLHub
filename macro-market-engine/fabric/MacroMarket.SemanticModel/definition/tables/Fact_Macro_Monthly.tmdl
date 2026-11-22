@@ -1,0 +1,38 @@
+table Fact_Macro_Monthly
+
+	column DateKey
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column EffectiveDateKey
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: EffectiveDateKey
+
+	column SeriesId
+		dataType: string
+		summarizeBy: none
+		sourceColumn: SeriesId
+
+	column value
+		dataType: double
+		summarizeBy: none
+		sourceColumn: value
+
+	column yoy_pct
+		dataType: double
+		summarizeBy: none
+		sourceColumn: yoy_pct
+
+	column mom_pct
+		dataType: double
+		summarizeBy: none
+		sourceColumn: mom_pct
+
+	partition Fact_Macro_Monthly = entity
+		mode: directLake
+		source
+			entityName: Fact_Macro_Monthly
+			schemaName: dbo
+			expressionSource: DatabaseQuery

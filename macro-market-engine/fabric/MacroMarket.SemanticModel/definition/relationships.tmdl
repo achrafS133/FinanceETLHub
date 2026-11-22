@@ -1,0 +1,27 @@
+relationship rel_Date_Market
+	fromColumn: Fact_Market_Daily.DateKey
+	toColumn: Dim_Date.DateKey
+
+relationship rel_Date_Macro
+	fromColumn: Fact_Macro_Monthly.DateKey
+	toColumn: Dim_Date.DateKey
+
+relationship rel_Date_Regime
+	fromColumn: Fact_Regime.DateKey
+	toColumn: Dim_Date.DateKey
+
+relationship rel_Asset_Market
+	fromColumn: Fact_Market_Daily.Ticker
+	toColumn: Dim_Asset.Ticker
+
+relationship rel_Asset_Beta
+	fromColumn: Fact_Macro_Beta.Ticker
+	toColumn: Dim_Asset.Ticker
+
+relationship rel_Asset_Stress
+	fromColumn: Fact_Stress_Scenario.Ticker
+	toColumn: Dim_Asset.Ticker
+
+relationship rel_Indicator_Macro
+	fromColumn: Fact_Macro_Monthly.SeriesId
+	toColumn: Dim_Macro_Indicator.SeriesId

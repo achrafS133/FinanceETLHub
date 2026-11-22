@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_Daily_Orchestration",
+    "description": "Daily orchestration: Dim_Date -> Bronze -> Silver -> Gold -> ML (regime, beta, stress) -> semantic model refresh."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "00000000-0000-0000-0000-00000000pipe"
+  }
+}

@@ -1,0 +1,53 @@
+table Fact_Stress_Scenario
+
+	column Scenario
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Scenario
+
+	column Ticker
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Ticker
+
+	column Regime
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Regime
+
+	column ExpectedReturn
+		dataType: double
+		summarizeBy: none
+		sourceColumn: ExpectedReturn
+
+	column ExpectedDrawdown
+		dataType: double
+		summarizeBy: none
+		sourceColumn: ExpectedDrawdown
+
+	column VaR95_1d
+		dataType: double
+		summarizeBy: none
+		sourceColumn: VaR95_1d
+
+	column VaR99_1d
+		dataType: double
+		summarizeBy: none
+		sourceColumn: VaR99_1d
+
+	column VaR95_10d
+		dataType: double
+		summarizeBy: none
+		sourceColumn: VaR95_10d
+
+	column RecoveryDays
+		dataType: double
+		summarizeBy: none
+		sourceColumn: RecoveryDays
+
+	partition Fact_Stress_Scenario = entity
+		mode: directLake
+		source
+			entityName: Fact_Stress_Scenario
+			schemaName: dbo
+			expressionSource: DatabaseQuery

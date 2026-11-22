@@ -1,0 +1,45 @@
+table Gold_Audit_Quality_Checks
+
+	column check_name
+		dataType: string
+		summarizeBy: none
+		sourceColumn: check_name
+
+	column status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	column metric_value
+		dataType: double
+		summarizeBy: none
+		sourceColumn: metric_value
+
+	column detail
+		dataType: string
+		summarizeBy: none
+		sourceColumn: detail
+
+	column ingestion_date
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ingestion_date
+
+	column run_timestamp
+		dataType: string
+		summarizeBy: none
+		sourceColumn: run_timestamp
+
+	measure 'Latest Run Failures' =
+			CALCULATE (
+				COUNTROWS ( Gold_Audit_Quality_Checks ),
+				Gold_Audit_Quality_Checks[status] = "fail",
+				Gold_Audit_Quality_Checks[run_timestamp] = MAX ( Gold_Audit_Quality_Checks[run_timestamp] )
+			)
+
+	partition Gold_Audit_Quality_Checks = entity
+		mode: directLake
+		source
+			entityName: Gold_Audit_Quality_Checks
+			schemaName: dbo
+			expressionSource: DatabaseQuery

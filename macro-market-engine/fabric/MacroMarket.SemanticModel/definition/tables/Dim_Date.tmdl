@@ -1,0 +1,57 @@
+table Dim_Date
+	dataCategory: Time
+
+	column DateKey
+		dataType: int64
+		isKey
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column Date
+		dataType: dateTime
+		isAvailableInMdx: true
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: Date
+
+	column Year
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: Year
+
+	column Quarter
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: Quarter
+
+	column Month
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: Month
+
+	column MonthName
+		dataType: string
+		summarizeBy: none
+		sourceColumn: MonthName
+
+	column IsTradingDay
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: IsTradingDay
+
+	column IsMonthEnd
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: IsMonthEnd
+
+	column IsQuarterEnd
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: IsQuarterEnd
+
+	partition Dim_Date = entity
+		mode: directLake
+		source
+			entityName: Dim_Date
+			schemaName: dbo
+			expressionSource: DatabaseQuery

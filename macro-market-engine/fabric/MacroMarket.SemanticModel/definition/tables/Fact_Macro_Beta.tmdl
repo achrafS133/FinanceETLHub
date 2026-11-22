@@ -1,0 +1,33 @@
+table Fact_Macro_Beta
+
+	column Ticker
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Ticker
+
+	column Factor
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Factor
+
+	column Beta
+		dataType: double
+		summarizeBy: none
+		sourceColumn: Beta
+
+	column MeanAbsShap
+		dataType: double
+		summarizeBy: none
+		sourceColumn: MeanAbsShap
+
+	column R2
+		dataType: double
+		summarizeBy: none
+		sourceColumn: R2
+
+	partition Fact_Macro_Beta = entity
+		mode: directLake
+		source
+			entityName: Fact_Macro_Beta
+			schemaName: dbo
+			expressionSource: DatabaseQuery

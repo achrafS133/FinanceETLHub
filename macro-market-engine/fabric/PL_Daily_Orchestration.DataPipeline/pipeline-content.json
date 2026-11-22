@@ -1,0 +1,98 @@
+{
+  "properties": {
+    "description": "End-to-end daily run of the Macro-to-Market Engine. Ends with 70_Quality_Checks (pipeline gate). Direct Lake semantic model needs manual metadata refresh only when Gold schema changes — no import refresh step.",
+    "activities": [
+      {
+        "name": "00_Dim_Date",
+        "type": "TridentNotebook",
+        "dependsOn": [],
+        "policy": { "timeout": "0.01:00:00", "retry": 1, "retryIntervalInSeconds": 60 },
+        "typeProperties": {
+          "notebookId": "00000000-0000-0000-0000-0000000000d0",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      {
+        "name": "10_Bronze_Ingest",
+        "type": "TridentNotebook",
+        "dependsOn": [ { "activity": "00_Dim_Date", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.02:00:00", "retry": 2, "retryIntervalInSeconds": 120 },
+        "typeProperties": {
+          "notebookId": "00000000-0000-0000-0000-0000000000b1",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "start_date": { "value": "2005-01-01", "type": "string" }
+          }
+        }
+      },
+      {
+        "name": "20_Silver_Align",
+        "type": "TridentNotebook",
+        "dependsOn": [ { "activity": "10_Bronze_Ingest", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.02:00:00", "retry": 1, "retryIntervalInSeconds": 120 },
+        "typeProperties": {
+          "notebookId": "00000000-0000-0000-0000-0000000000s2",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      {
+        "name": "30_Gold_StarSchema",
+        "type": "TridentNotebook",
+        "dependsOn": [ { "activity": "20_Silver_Align", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.02:00:00", "retry": 1, "retryIntervalInSeconds": 120 },
+        "typeProperties": {
+          "notebookId": "00000000-0000-0000-0000-0000000000g3",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      {
+        "name": "40_ML_Regime_HMM",
+        "type": "TridentNotebook",
+        "dependsOn": [ { "activity": "30_Gold_StarSchema", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.01:00:00", "retry": 1, "retryIntervalInSeconds": 120 },
+        "typeProperties": {
+          "notebookId": "00000000-0000-0000-0000-000000000m40",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      {
+        "name": "50_ML_MacroBeta",
+        "type": "TridentNotebook",
+        "dependsOn": [ { "activity": "30_Gold_StarSchema", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.01:00:00", "retry": 1, "retryIntervalInSeconds": 120 },
+        "typeProperties": {
+          "notebookId": "00000000-0000-0000-0000-000000000m50",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      {
+        "name": "60_ML_StressTest",
+        "type": "TridentNotebook",
+        "dependsOn": [ { "activity": "40_ML_Regime_HMM", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.01:00:00", "retry": 1, "retryIntervalInSeconds": 120 },
+        "typeProperties": {
+          "notebookId": "00000000-0000-0000-0000-000000000m60",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        }
+      },
+      {
+        "name": "70_Quality_Checks",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          { "activity": "50_ML_MacroBeta", "dependencyConditions": [ "Succeeded" ] },
+          { "activity": "60_ML_StressTest", "dependencyConditions": [ "Succeeded" ] }
+        ],
+        "policy": { "timeout": "0.01:00:00", "retry": 0, "retryIntervalInSeconds": 60 },
+        "typeProperties": {
+          "notebookId": "00000000-0000-0000-0000-0000000000q7",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "drift_tolerance": { "value": "0.15", "type": "string" },
+            "outlier_max_rate": { "value": "0.01", "type": "string" }
+          }
+        }
+      }
+    ],
+    "annotations": [ "macro-market-engine" ]
+  }
+}

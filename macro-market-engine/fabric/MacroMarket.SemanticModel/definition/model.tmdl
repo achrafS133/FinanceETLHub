@@ -1,0 +1,26 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+	annotation PBI_QueryOrder = ["DatabaseQuery"]
+
+	annotation __PBI_TimeIntelligenceEnabled = 0
+
+ref table Dim_Date
+ref table Dim_Asset
+ref table Dim_Country
+ref table Dim_Macro_Indicator
+ref table Fact_Market_Daily
+ref table Fact_Macro_Monthly
+ref table Fact_Regime
+ref table Fact_Macro_Beta
+ref table Fact_Stress_Scenario
+ref table Gold_Audit_Quality_Checks
+ref table _Measures
+
+ref cultureInfo en-US

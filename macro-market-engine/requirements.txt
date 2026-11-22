@@ -1,0 +1,29 @@
+# ---- Core (local dev + unit tests; most are preinstalled in Fabric runtimes) ----
+pandas>=2.0
+numpy>=1.24
+pyyaml>=6.0
+python-dotenv>=1.0
+requests>=2.31
+
+# ---- Ingestion ----
+fredapi>=0.5.1          # FRED REST wrapper
+yfinance>=0.2.40        # Yahoo Finance OHLCV (or use Stooq as fallback)
+pandas-datareader>=0.10 # World Bank / Stooq convenience readers
+
+# ---- ML / Econometrics (Fabric Data Science) ----
+scikit-learn>=1.3       # ElasticNet, Ridge, GMM, StandardScaler
+hmmlearn>=0.3.0         # Gaussian HMM regime detection
+statsmodels>=0.14       # VAR, stationarity tests
+xgboost>=2.0            # Optional non-linear macro-beta
+shap>=0.44              # Feature attribution
+mlflow>=2.9             # Experiment tracking (bundled in Fabric Data Science)
+
+# ---- Data quality ----
+great-expectations>=0.18  # Optional; PySpark assertions provided as a lightweight default
+
+# ---- Local Spark/Delta for offline dev (NOT needed inside Fabric) ----
+# pyspark==3.5.*
+# delta-spark==3.1.*
+
+# ---- Testing ----
+pytest>=8.0

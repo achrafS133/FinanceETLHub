@@ -1,0 +1,10 @@
+/// Direct Lake source. Replace the SQL analytics endpoint and Lakehouse GUID with the
+/// values from your workspace (Lakehouse -> Settings -> SQL analytics endpoint).
+expression DatabaseQuery =
+		let
+			database = Sql.Database("REPLACE_WITH_SQL_ENDPOINT.datawarehouse.fabric.microsoft.com", "00000000-0000-0000-0000-00000000lake")
+		in
+			database
+	lineageTag: 00000000-0000-0000-0000-0000000dbqry
+
+	annotation PBI_IncludeFutureArtifacts = False

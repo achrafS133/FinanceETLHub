@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "40_ML_Regime_HMM",
+    "description": "Unsupervised macro regime detection (Gaussian HMM) with MLflow tracking; writes Fact_Regime."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "00000000-0000-0000-0000-000000000m40"
+  }
+}

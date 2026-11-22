@@ -1,0 +1,53 @@
+table Fact_Market_Daily
+
+	column DateKey
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column Ticker
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Ticker
+
+	column adj_close
+		dataType: double
+		summarizeBy: none
+		sourceColumn: adj_close
+
+	column log_ret_w
+		dataType: double
+		summarizeBy: none
+		sourceColumn: log_ret_w
+
+	column simple_ret
+		dataType: double
+		summarizeBy: none
+		sourceColumn: simple_ret
+
+	column vol_30
+		dataType: double
+		summarizeBy: none
+		sourceColumn: vol_30
+
+	column vol_90
+		dataType: double
+		summarizeBy: none
+		sourceColumn: vol_90
+
+	column vol_252
+		dataType: double
+		summarizeBy: none
+		sourceColumn: vol_252
+
+	column volume
+		dataType: double
+		summarizeBy: sum
+		sourceColumn: volume
+
+	partition Fact_Market_Daily = entity
+		mode: directLake
+		source
+			entityName: Fact_Market_Daily
+			schemaName: dbo
+			expressionSource: DatabaseQuery

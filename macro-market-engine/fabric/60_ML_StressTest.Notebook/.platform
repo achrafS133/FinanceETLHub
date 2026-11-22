@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "60_ML_StressTest",
+    "description": "Sovereign & market stress-test simulator (VAR + Monte Carlo on regime-conditioned covariance); writes Fact_Stress_Scenario."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "00000000-0000-0000-0000-000000000m60"
+  }
+}

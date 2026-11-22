@@ -1,0 +1,60 @@
+# Declarative catalog of every data source the engine ingests.
+# Notebooks read this file so adding a series/ticker never requires code changes.
+
+fred:
+  description: "US & global macro (Federal Reserve Bank of St. Louis)"
+  access: "REST API via fredapi (needs FRED_API_KEY)"
+  # series_id: { freq, transform_hint, label }
+  series:
+    FEDFUNDS:   { freq: monthly,   label: "Effective Fed Funds Rate (%)" }
+    CPIAUCSL:   { freq: monthly,   label: "CPI, All Urban Consumers (index)" }
+    PCEPILFE:   { freq: monthly,   label: "Core PCE Price Index" }
+    T10Y2Y:     { freq: daily,     label: "10Y-2Y Treasury Spread (%)" }
+    DGS10:      { freq: daily,     label: "10Y Treasury Yield (%)" }
+    DGS2:       { freq: daily,     label: "2Y Treasury Yield (%)" }
+    UNRATE:     { freq: monthly,   label: "Unemployment Rate (%)" }
+    INDPRO:     { freq: monthly,   label: "Industrial Production Index" }
+    BAMLH0A0HYM2: { freq: daily,   label: "ICE BofA US High Yield OAS (credit spread)" }
+    DTWEXBGS:   { freq: daily,     label: "Nominal Broad USD Index (DXY proxy)" }
+
+world_bank:
+  description: "Sovereign & global indicators (190+ countries)"
+  access: "REST API (no key)"
+  # World Bank indicator codes
+  indicators:
+    NY.GDP.MKTP.KD.ZG: "GDP growth (annual %)"
+    FP.CPI.TOTL.ZG:    "Inflation, consumer prices (annual %)"
+    GC.DOD.TOTL.GD.ZS: "Central government debt (% of GDP)"
+    BN.CAB.XOKA.GD.ZS: "Current account balance (% of GDP)"
+  countries: [USA, CHN, JPN, DEU, GBR, FRA, IND, BRA, CAN, AUS, KOR, MEX, ITA, ESP, RUS]
+
+imf:
+  description: "IMF DataMapper (WEO projections)"
+  access: "REST API (no key)"
+  indicators:
+    NGDP_RPCH: "Real GDP growth (%)"
+    PCPIPCH:   "Inflation, average consumer prices (%)"
+    GGXWDG_NGDP: "General government gross debt (% of GDP)"
+
+market:
+  description: "Daily OHLCV for broad market, sectors, countries, commodities"
+  access: "yfinance (Yahoo) with Stooq fallback"
+  tickers:
+    broad:      [SPY, AGG, TLT, GLD]          # S&P500, US Agg bonds, Long Treasuries, Gold
+    sectors:    [XLK, XLF, XLE, XLV, XLY, XLP, XLI, XLB, XLU, XLRE, XLC]  # GICS sector SPDRs
+    countries:  [EWJ, EWG, EWZ, EWU, EWC, EWA, EWY, INDA, MCHI]          # Country ETFs
+    fx_commodity: [UUP, USO]                   # USD bull, oil
+  start: "2005-01-01"
+
+sec_edgar:
+  description: "Company fundamentals (10-Q/10-K)"
+  access: "REST API, requires SEC_USER_AGENT header"
+  # Facts pulled from companyconcept/companyfacts (us-gaap taxonomy)
+  concepts:
+    Revenues: "RevenueFromContractWithCustomerExcludingAssessedTax"
+    OperatingIncome: "OperatingIncomeLoss"
+    NetIncome: "NetIncomeLoss"
+    TotalDebt: "LongTermDebtNoncurrent"
+    StockholdersEquity: "StockholdersEquity"
+  # Seed universe (CIK will be resolved at runtime from ticker->CIK map)
+  tickers: [AAPL, MSFT, NVDA, JPM, XOM, JNJ, PG, CAT, NEE, AMZN]
