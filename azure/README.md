@@ -1,6 +1,6 @@
 # Azure & Microsoft deployment guide
 
-FinanceETLHub is aligned to the **Microsoft data stack**:
+FinanceHub is aligned to the **Microsoft data stack**:
 
 | Workload | Microsoft service | Repo path |
 |----------|-------------------|-----------|

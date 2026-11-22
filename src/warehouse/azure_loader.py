@@ -1,4 +1,4 @@
-"""Azure Data Lake (Blob) + Azure SQL targets — Microsoft-aligned cloud path for FinanceETLHub."""
+"""Azure Data Lake (Blob) + Azure SQL targets — Microsoft-aligned cloud path for FinanceHub."""
 from __future__ import annotations
 
 import os

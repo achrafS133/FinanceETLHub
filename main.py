@@ -18,7 +18,7 @@ from config.settings import settings
 def main():
     import sys
     logger.info(f"PythonPath: {sys.path}")
-    parser = argparse.ArgumentParser(description="FinanceETLHub - End-to-End ETL Pipeline")
+    parser = argparse.ArgumentParser(description="FinanceHub - End-to-End ETL Pipeline")
     parser.add_argument('--step', type=str, choices=['ingest', 'transform', 'load', 'full', 'cdc', 'dashboard', 'predict', 'test'], default='full', help='ETL Step to run')
     args = parser.parse_args()
 

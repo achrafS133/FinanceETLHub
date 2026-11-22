@@ -54,11 +54,14 @@ class CSVLoader:
         all_dfs = []
         
         # 1. Standard raw path
+        logger.info(f"Scanning {self.raw_path} for data...")
         all_dfs.extend(self._load_from_dir(self.raw_path))
 
-        # 2. Extra folder from user
-        extra_path = r"c:\Users\MSI\Desktop\FinanceETLHub\online+retail"
-        all_dfs.extend(self._load_from_dir(extra_path))
+        # 2. Extra folder from user (Only if raw path was empty or we want to merge)
+        if not all_dfs:
+            extra_path = settings.BASE_DIR / "online+retail"
+            logger.info(f"Scanning {extra_path} for data...")
+            all_dfs.extend(self._load_from_dir(extra_path))
 
         # 3. Fallback: Download if everything is empty
         if not all_dfs:

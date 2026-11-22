@@ -1,4 +1,4 @@
--- Finance ETL Hub — Azure SQL star schema (T-SQL)
+-- FinanceHub — Azure SQL star schema (T-SQL)
 -- Run in Azure SQL Database, Azure SQL MI, or Synapse dedicated pool (adjust types if needed).
 
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'dim_date')

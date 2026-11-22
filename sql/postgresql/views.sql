@@ -1,4 +1,4 @@
--- Finance ETL Hub - Analytical Views
+-- FinanceHub - Analytical Views
 -- PostgreSQL
 
 -- View: Sales Performance by Country

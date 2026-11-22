@@ -1,4 +1,4 @@
-# Finance ETL Hub - Project Management
+# FinanceHub - Project Management
 # Usage: make <command>
 
 PYTHON = python
@@ -7,7 +7,7 @@ PIP = pip
 .PHONY: setup up down etl cdc test dashboard clean help
 
 help:
-	@echo "Finance ETL Hub - Commands:"
+	@echo "FinanceHub - Commands:"
 	@echo "  setup      - Install dependencies and create .env"
 	@echo "  up         - Start PostgreSQL database (Docker)"
 	@echo "  down       - Stop PostgreSQL database"

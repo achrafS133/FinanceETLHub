@@ -1,5 +1,5 @@
 
-# FinanceETLHub — Power BI (Microsoft)
+# FinanceHub — Power BI (Microsoft)
 
 ## Retail star schema (Online Retail ETL)
 

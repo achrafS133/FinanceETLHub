@@ -1,7 +1,7 @@
 # 📊 Finance Data Platform - Project Abstract & Presentation Plan
 
 ## 🏆 Executive Summary
-The **Finance ETL Hub** is an end-to-end, industrial-grade data engineering platform designed to transform raw commercial transactions into actionable financial intelligence. The system implements a modern **Medallion Architecture**, progressing from raw data storage (**Azure Blob** / local) to a **Star Schema** warehouse (PostgreSQL / **Azure SQL**). Institutional macro analytics live in **Microsoft Fabric** (`macro-market-engine/`). 
+**FinanceHub** is an end-to-end, industrial-grade data engineering platform designed to transform raw commercial transactions into actionable financial intelligence. The system implements a modern **Medallion Architecture**, progressing from raw data storage (**Azure Blob** / local) to a **Star Schema** warehouse (PostgreSQL / **Azure SQL**). Institutional macro analytics live in **Microsoft Fabric** (`macro-market-engine/`). 
 
 Key innovations include an **AI-driven revenue forecaster**, an **automated fraud detection engine**, and **RFM customer segmentation**, all orchestrated through a production-ready CI/CD and automation framework.
 

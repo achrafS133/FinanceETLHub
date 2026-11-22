@@ -1,5 +1,5 @@
 
-# Finance Data Platform (ETL Hub)
+# FinanceHub
 
 A production-style financial data platform on the **Microsoft stack**: retail ETL (Azure Blob + Azure SQL + Power BI) and a **Microsoft Fabric** macro-to-market Lakehouse in [`macro-market-engine/`](macro-market-engine/).
 
@@ -15,7 +15,7 @@ A production-style financial data platform on the **Microsoft stack**: retail ET
 ## Project structure
 
 ```text
-FinanceETLHub/
+FinanceHub/
 ├── azure/                 # Azure deployment guide
 ├── macro-market-engine/   # Microsoft Fabric Lakehouse (separate workload)
 ├── config/

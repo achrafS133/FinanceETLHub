@@ -1,8 +1,11 @@
-import pandas as pd
 import os
 
-path1 = r"c:\Users\MSI\Desktop\FinanceETLHub\data\raw\online_retail.xlsx"
-path2 = r"c:\Users\MSI\Desktop\FinanceETLHub\online+retail\Online Retail.xlsx"
+import pandas as pd
+from config.settings import settings
+
+root = settings.BASE_DIR
+path1 = root / "data" / "raw" / "online_retail.xlsx"
+path2 = root / "online+retail" / "Online Retail.xlsx"
 
 def check_file(path):
     if os.path.exists(path):

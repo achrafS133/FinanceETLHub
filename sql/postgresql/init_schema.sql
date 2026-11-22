@@ -1,4 +1,4 @@
--- Finance ETL Hub - Star Schema DDL
+-- FinanceHub - Star Schema DDL
 -- Generated for PostgreSQL
 
 -- Dimension: Date
@@ -44,5 +44,7 @@ CREATE TABLE IF NOT EXISTS fact_sales (
     total_usd FLOAT,
     total_eur FLOAT,
     total_mad FLOAT,
-    is_fraud_suspect BOOLEAN
+    is_fraud_suspect BOOLEAN,
+    is_deep_fraud_suspect BOOLEAN,
+    fraud_probability FLOAT
 );
