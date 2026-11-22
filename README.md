@@ -3,7 +3,7 @@
 
 A comprehensive, production-ready Data Engineering project simulating a Financial Data Platform. This repository includes an end-to-end ETL pipeline, Data Warehouse modeling, and dashboard integration.
 
-## 🚀 Features
+##  Features
 
 - **Data Ingestion**: Automated download and conversion of Online Retail dataset; Exchange Rate API integration.
 - **CDC Simulation**: Logic to simulate Incremental Loads (Change Data Capture).
@@ -15,7 +15,7 @@ A comprehensive, production-ready Data Engineering project simulating a Financia
 - **Quality Assurance**: Automated Data Quality Suite with uniqueness and date range validation.
 - **Deployment**: Dockerized Database, GCP-ready scripts, and local FX rate caching.
 
-## 📂 Project Structure
+##  Project Structure
 
 ```bash
 FinanceETLHub/
@@ -33,7 +33,7 @@ FinanceETLHub/
 └── Makefile             # Task Automation Shortcut
 ```
 
-## 🛠️ Setup & Installation
+##  Setup & Installation
 
 1. **Clone & Setup**
    ```bash
@@ -48,7 +48,7 @@ FinanceETLHub/
    make up
    ```
 
-## ▶️ Usage
+##  Usage
 
 ### Run Modern ETL (CDC Mode)
 Simulates an initial load followed by an incremental batch:
@@ -71,7 +71,7 @@ make dashboard
 make test
 ```
 
-## 📊 Analytics
+##  Analytics
 The platform provides deep insights into:
 - **Revenue Performance**: Multi-currency valuation across borders.
 - **Customer Health**: Identification of 'Best Customers' and 'At Risk' profiles.
@@ -81,7 +81,7 @@ Connect Power BI/Looker to `localhost:5432` or use the built-in Streamlit app.
 
 ---
 
-## ☁️ Advanced: Cloud Migration (GCP)
+##  Advanced: Cloud Migration (GCP)
 The platform is ready to scale to the cloud using **Google BigQuery**.
 
 1. **Credentials**: Place your `service-account.json` in the root and update `.env`:
@@ -94,7 +94,7 @@ The platform is ready to scale to the cloud using **Google BigQuery**.
 
 ---
 
-## 🔄 Advanced: Orchestration (Apache Airflow)
+##  Advanced: Orchestration (Apache Airflow)
 Automate the daily execution of your pipeline.
 
 1. **DAG Location**: The orchestration file is located at `dags/finance_etl_dag.py`.
